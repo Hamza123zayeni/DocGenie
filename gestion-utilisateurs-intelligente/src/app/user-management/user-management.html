@@ -1,0 +1,90 @@
+<section class="user-management">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Administration</p>
+      <h1>User Management</h1>
+      <p class="description">
+        Manage users, roles, and account status from one place.
+      </p>
+    </div>
+
+    <button class="primary-button" type="button">
+      + Add user
+    </button>
+  </header>
+
+  <div class="toolbar">
+    <input
+      type="search"
+      placeholder="Search by name, email, or role..."
+      [(ngModel)]="search"
+    />
+  </div>
+
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th class="right">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let user of filteredUsers">
+          <td>
+            <div class="user-cell">
+              <div class="avatar">
+                {{ user.name.charAt(0) }}
+              </div>
+              <strong>{{ user.name }}</strong>
+            </div>
+          </td>
+
+          <td>{{ user.email }}</td>
+
+          <td>
+            <select
+              [ngModel]="user.role"
+              (ngModelChange)="updateRole(user, $event)"
+            >
+              <option value="Admin">Admin</option>
+              <option value="Manager">Manager</option>
+              <option value="Developer">Developer</option>
+              <option value="Viewer">Viewer</option>
+            </select>
+          </td>
+
+          <td>
+            <span
+              class="status"
+              [class.active]="user.active"
+              [class.inactive]="!user.active"
+            >
+              {{ user.active ? 'Active' : 'Inactive' }}
+            </span>
+          </td>
+
+          <td class="right">
+            <button
+              type="button"
+              class="secondary-button"
+              (click)="toggleStatus(user)"
+            >
+              {{ user.active ? 'Deactivate' : 'Activate' }}
+            </button>
+          </td>
+        </tr>
+
+        <tr *ngIf="filteredUsers.length === 0">
+          <td colspan="5" class="empty">
+            No users found.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
